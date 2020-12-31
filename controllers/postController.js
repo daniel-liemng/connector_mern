@@ -27,5 +27,19 @@ const createPost = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+// @route   GET api/posts
+// @desc    Get all posts
+// @access  Private
+const getAllPosts = async (req, res) => {
+  try {
+    // Get most recent posts - order
+    const allPosts = await Post.find().sort({ date: -1 });
 
-module.exports = { createPost };
+    res.json(allPosts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = { createPost, getAllPosts };

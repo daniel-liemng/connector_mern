@@ -9,4 +9,9 @@ const router = require("express").Router();
 // @access  Private
 router.post("/", authProtect, postValidator, postController.createPost);
 
+// @route   GET api/posts
+// @desc    Get all posts
+// @access  Private
+router.get("/", authProtect, postController.getAllPosts);
+
 module.exports = router;
