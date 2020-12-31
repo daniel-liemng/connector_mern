@@ -42,4 +42,33 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getAllPosts };
+// @route   DELETE api/posts/:postId
+// @desc    Delete a post - Just creator can delete post
+// @access  Private
+const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    // Check if post exists
+    if (!post) {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+
+    // Check if user is the creator
+    if (post.user.toString() !== req.user.id) {
+      return res.status(401).json({ errors: [{ msg: "User Not Authorized" }] });
+    }
+
+    await post.remove();
+
+    res.json({ msg: "Post removed" });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = { createPost, getAllPosts, deletePost };

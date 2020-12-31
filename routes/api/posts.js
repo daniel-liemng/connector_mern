@@ -14,4 +14,9 @@ router.post("/", authProtect, postValidator, postController.createPost);
 // @access  Private
 router.get("/", authProtect, postController.getAllPosts);
 
+// @route   DELETE api/posts/:postId
+// @desc    Delete a post - Just creator can delete post
+// @access  Private
+router.delete("/:postId", authProtect, postController.deletePost);
+
 module.exports = router;
