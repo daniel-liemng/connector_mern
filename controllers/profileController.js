@@ -93,4 +93,18 @@ const createUpdateProfile = async (req, res) => {
   }
 };
 
-module.exports = { getCurrentUserProfile, createUpdateProfile };
+// @route   GET api/profile
+// @desc    Get all profiles
+// @access  Public
+const getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = { getCurrentUserProfile, createUpdateProfile, getAllProfiles };

@@ -19,4 +19,9 @@ router.post(
   profileController.createUpdateProfile
 );
 
+// @route   GET api/profile
+// @desc    Get all profiles
+// @access  Public
+router.get("/", profileController.getAllProfiles);
+
 module.exports = router;
