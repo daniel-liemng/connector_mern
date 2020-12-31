@@ -24,4 +24,9 @@ router.post(
 // @access  Public
 router.get("/", profileController.getAllProfiles);
 
+// @route   GET api/profile/user/:userId
+// @desc    Get profile by user ID
+// @access  Public
+router.get("/user/:userId", profileController.getProfileByUserId);
+
 module.exports = router;

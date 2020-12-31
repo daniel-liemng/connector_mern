@@ -107,4 +107,35 @@ const getAllProfiles = async (req, res) => {
   }
 };
 
-module.exports = { getCurrentUserProfile, createUpdateProfile, getAllProfiles };
+// @route   GET api/profile/user/:userId
+// @desc    Get profile by user ID
+// @access  Public
+const getProfileByUserId = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.userId,
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profile) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "There is no profile for this user" }] });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    // Show error if userId in URL not in the ObjectID types of Mongoose
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ errors: [{ msg: "Profile Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = {
+  getCurrentUserProfile,
+  createUpdateProfile,
+  getAllProfiles,
+  getProfileByUserId,
+};
