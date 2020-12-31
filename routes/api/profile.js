@@ -67,4 +67,13 @@ router.put(
   profileController.addEducation
 );
 
+// @route   DELETE api/profile/education/:eduId
+// @desc    Delete education from profile
+// @access  Private
+router.delete(
+  "/education/:eduId",
+  authProtect,
+  profileController.deleteEducation
+);
+
 module.exports = router;

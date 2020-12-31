@@ -257,6 +257,38 @@ const addEducation = async (req, res) => {
   }
 };
 
+// @route   DELETE api/profile/education/:eduId
+// @desc    Delete education from profile
+// @access  Private
+const deleteEducation = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Get remove index
+    const removeIndex = profile.education
+      .map((item) => item.id)
+      .indexOf(req.params.eduId);
+
+    // No index found
+    if (removeIndex === -1) {
+      return res.status(400).json({ errors: [{ msg: "Education Not Found" }] });
+    }
+
+    profile.education.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    // Show error if eduId in URL not in the ObjectID types of Mongoose
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ errors: [{ msg: "Education Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
@@ -266,4 +298,5 @@ module.exports = {
   addExperience,
   deleteExperience,
   addEducation,
+  deleteEducation,
 };
