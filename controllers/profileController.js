@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 
@@ -289,6 +291,31 @@ const deleteEducation = async (req, res) => {
   }
 };
 
+// @route   GET api/profile/github/:username
+// @desc    Get user repo from Github
+// @access  Public
+const getGithubRepos = async (req, res) => {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`,
+      { method: "GET" }
+    );
+
+    if (response.status !== 200) {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "No Github profile found" }] });
+    }
+
+    const data = await response.json();
+
+    res.json(data);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
@@ -299,4 +326,5 @@ module.exports = {
   deleteExperience,
   addEducation,
   deleteEducation,
+  getGithubRepos,
 };
