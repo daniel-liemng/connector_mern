@@ -24,4 +24,9 @@ router.get("/:postId", authProtect, postController.getSinglePost);
 // @access  Private
 router.delete("/:postId", authProtect, postController.deletePost);
 
+// @route   PUT api/posts/like/:postId
+// @desc    Like a post
+// @access  Private
+router.put("/like/:postId", authProtect, postController.likePost);
+
 module.exports = router;
