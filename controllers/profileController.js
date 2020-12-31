@@ -133,9 +133,30 @@ const getProfileByUserId = async (req, res) => {
   }
 };
 
+// @route   DELETE api/profile
+// @desc    Delete profile, user & posts
+// @access  Private
+const deleteProfile = async (req, res) => {
+  try {
+    // Delete profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+
+    // Delete user
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    // Delete posts
+
+    res.json({ msg: "User, Profile deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
   getAllProfiles,
   getProfileByUserId,
+  deleteProfile,
 };
