@@ -14,6 +14,11 @@ router.post("/", authProtect, postValidator, postController.createPost);
 // @access  Private
 router.get("/", authProtect, postController.getAllPosts);
 
+// @route   GET api/posts/:postId
+// @desc    Get a post by ID
+// @access  Private
+router.get("/:postId", authProtect, postController.getSinglePost);
+
 // @route   DELETE api/posts/:postId
 // @desc    Delete a post - Just creator can delete post
 // @access  Private
