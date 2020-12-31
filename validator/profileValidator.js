@@ -12,4 +12,17 @@ const profileValidator = [
   },
 ];
 
-module.exports = { profileValidator };
+const experienceValidator = [
+  body("title", "Title is required").not().isEmpty(),
+  body("company", "Company is required").not().isEmpty(),
+  body("from", "From date is required").not().isEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+module.exports = { profileValidator, experienceValidator };

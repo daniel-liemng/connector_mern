@@ -153,10 +153,41 @@ const deleteProfile = async (req, res) => {
   }
 };
 
+// @route   PUT api/profile/experience
+// @desc    Add profile experience
+// @access  Private
+const addExperience = async (req, res) => {
+  const { title, company, location, from, to, current, description } = req.body;
+
+  try {
+    const newExperience = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    profile.experience.unshift(newExperience);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
   getAllProfiles,
   getProfileByUserId,
   deleteProfile,
+  addExperience,
 };

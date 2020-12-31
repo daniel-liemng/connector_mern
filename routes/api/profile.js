@@ -1,6 +1,9 @@
 const authProtect = require("../../middleware/authMiddleware");
 const profileController = require("../../controllers/profileController");
-const { profileValidator } = require("../../validator/profileValidator");
+const {
+  profileValidator,
+  experienceValidator,
+} = require("../../validator/profileValidator");
 
 const router = require("express").Router();
 
@@ -33,5 +36,15 @@ router.get("/user/:userId", profileController.getProfileByUserId);
 // @desc    Delete profile, user & posts
 // @access  Private
 router.delete("/", authProtect, profileController.deleteProfile);
+
+// @route   PUT api/profile/experience
+// @desc    Add profile experience
+// @access  Private
+router.put(
+  "/experience",
+  authProtect,
+  experienceValidator,
+  profileController.addExperience
+);
 
 module.exports = router;
