@@ -3,6 +3,7 @@ const profileController = require("../../controllers/profileController");
 const {
   profileValidator,
   experienceValidator,
+  educationValidator,
 } = require("../../validator/profileValidator");
 
 const router = require("express").Router();
@@ -54,6 +55,16 @@ router.delete(
   "/experience/:expId",
   authProtect,
   profileController.deleteExperience
+);
+
+// @route   PUT api/profile/education
+// @desc    Add profile education
+// @access  Private
+router.put(
+  "/education",
+  authProtect,
+  educationValidator,
+  profileController.addEducation
 );
 
 module.exports = router;

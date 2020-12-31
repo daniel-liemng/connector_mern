@@ -219,6 +219,44 @@ const deleteExperience = async (req, res) => {
   }
 };
 
+// @route   PUT api/profile/education
+// @desc    Add profile education
+// @access  Private
+const addEducation = async (req, res) => {
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  } = req.body;
+
+  try {
+    const newEducation = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    profile.education.unshift(newEducation);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
@@ -227,4 +265,5 @@ module.exports = {
   deleteProfile,
   addExperience,
   deleteExperience,
+  addEducation,
 };

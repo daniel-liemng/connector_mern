@@ -25,4 +25,18 @@ const experienceValidator = [
   },
 ];
 
-module.exports = { profileValidator, experienceValidator };
+const educationValidator = [
+  body("school", "School is required").not().isEmpty(),
+  body("degree", "Degree is required").not().isEmpty(),
+  body("fieldofstudy", "Field of study is required").not().isEmpty(),
+  body("from", "From date is required").not().isEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+module.exports = { profileValidator, experienceValidator, educationValidator };
