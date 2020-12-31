@@ -183,6 +183,42 @@ const addExperience = async (req, res) => {
   }
 };
 
+// @route   DELETE api/profile/experience/:expId
+// @desc    Delete experience from profile
+// @access  Private
+const deleteExperience = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Get remove index
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.expId);
+
+    // No index found
+    if (removeIndex === -1) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Experience Not Found" }] });
+    }
+
+    profile.experience.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    // Show error if expId in URL not in the ObjectID types of Mongoose
+    if (err.kind === "ObjectId") {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Experience Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   getCurrentUserProfile,
   createUpdateProfile,
@@ -190,4 +226,5 @@ module.exports = {
   getProfileByUserId,
   deleteProfile,
   addExperience,
+  deleteExperience,
 };
