@@ -127,10 +127,57 @@ const likePost = async (req, res) => {
   }
 };
 
+// @route   PUT api/posts/unlike/:postId
+// @desc    Unike a post
+// @access  Private
+const unlikePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    // Check if post exists
+    if (!post) {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+
+    // Check if the post has not been liked
+    if (
+      post.likes.filter((like) => like.user.toString() === req.user.id)
+        .length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Post has not yet been liked" }] });
+    }
+
+    // Get the remove index
+    const removeIndex = post.likes
+      .map((like) => like.user.toString())
+      .indexOf(req.user.id);
+
+    // No index found
+    if (removeIndex === -1) {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+
+    post.likes.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getSinglePost,
   deletePost,
   likePost,
+  unlikePost,
 };

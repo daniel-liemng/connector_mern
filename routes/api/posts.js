@@ -29,4 +29,9 @@ router.delete("/:postId", authProtect, postController.deletePost);
 // @access  Private
 router.put("/like/:postId", authProtect, postController.likePost);
 
+// @route   PUT api/posts/unlike/:postId
+// @desc    Unlike a post
+// @access  Private
+router.put("/unlike/:postId", authProtect, postController.unlikePost);
+
 module.exports = router;
