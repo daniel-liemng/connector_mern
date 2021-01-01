@@ -34,4 +34,23 @@ router.put("/like/:postId", authProtect, postController.likePost);
 // @access  Private
 router.put("/unlike/:postId", authProtect, postController.unlikePost);
 
+// @route   POST api/posts/comment/:postId
+// @desc    Comment on a post
+// @access  Private
+router.post(
+  "/comment/:postId",
+  authProtect,
+  postValidator,
+  postController.createComment
+);
+
+// @route   DELETE api/posts/comment/:postId/:commentId
+// @desc    Delete a Comment on a post
+// @access  Private
+router.delete(
+  "/comment/:postId/:commentId",
+  authProtect,
+  postController.deleteComment
+);
+
 module.exports = router;

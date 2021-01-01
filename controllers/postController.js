@@ -28,6 +28,7 @@ const createPost = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
 // @route   GET api/posts
 // @desc    Get all posts
 // @access  Private
@@ -156,7 +157,7 @@ const unlikePost = async (req, res) => {
 
     // No index found
     if (removeIndex === -1) {
-      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+      return res.status(404).json({ errors: [{ msg: "Like Not Found" }] });
     }
 
     post.likes.splice(removeIndex, 1);
@@ -173,6 +174,95 @@ const unlikePost = async (req, res) => {
   }
 };
 
+// @route   POST api/posts/comment/:postId
+// @desc    Comment on a post
+// @access  Private
+const createComment = async (req, res) => {
+  const { text } = req.body;
+
+  try {
+    // Find current user to get name & avatar
+    const user = await User.findById(req.user.id).select("-password");
+
+    // Find post
+    const post = await Post.findById(req.params.postId);
+
+    // Check if post exists
+    if (!post) {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+
+    const newCommemnt = {
+      text,
+      name: user.name,
+      avatar: user.avatar,
+      user: req.user.id,
+    };
+
+    post.comments.unshift(newCommemnt);
+
+    await post.save();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
+// @route   DELETE api/posts/comment/:postId/:commentId
+// @desc    Delete a Comment on a post
+// @access  Private
+const deleteComment = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    // Pull out comment
+    const comment = post.comments.find(
+      (comment) => comment.id === req.params.commentId
+    );
+
+    // Check if comment exists
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ errors: [[{ msg: "Comment does not exist" }]] });
+    }
+
+    // Check if user is creator
+    if (comment.user.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ errors: [[{ msg: "User Not Authorized" }]] });
+    }
+
+    // Get remove index
+    const removeIndex = post.comments
+      .map((comment) => comment.user.toString())
+      .indexOf(req.user.id);
+
+    // No index found
+    if (removeIndex === -1) {
+      return res.status(404).json({ errors: [{ msg: "Comment Not Found" }] });
+    }
+
+    post.comments.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ errors: [{ msg: "Post Not Found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -180,4 +270,6 @@ module.exports = {
   deletePost,
   likePost,
   unlikePost,
+  createComment,
+  deleteComment,
 };
