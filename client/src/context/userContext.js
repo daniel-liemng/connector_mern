@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 import reducer from "../reducers/userReducer";
@@ -15,13 +15,15 @@ import {
 
 const UserContext = createContext();
 
-const getTokenFromLocalStorage = localStorage.getItem("connector-token")
-  ? JSON.parse(localStorage.getItem("connector-token"))
-  : null;
+const getTokenFromLocalStorage = () =>
+  localStorage.getItem("connector-token")
+    ? JSON.parse(localStorage.getItem("connector-token"))
+    : null;
 
 const initialState = {
-  token: getTokenFromLocalStorage,
+  token: getTokenFromLocalStorage(),
   isAuthenticated: null,
+  user: null,
   user_login_loading: false,
   user_login_error: null,
   user_register_loading: false,
@@ -32,9 +34,13 @@ const initialState = {
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // useEffect(() => {
+  //   getTokenFromLocalStorage();
+  // }, [getTokenFromLocalStorage]);
+
   const registerUser = async (name, email, password) => {
     // loading
-    // dispatch({ type: USER_REGISTER_REQUEST });
+    dispatch({ type: USER_REGISTER_REQUEST });
 
     try {
       const config = {
@@ -50,17 +56,27 @@ const UserProvider = ({ children }) => {
       );
 
       console.log("aaa", data);
-      localStorage.setItem("event-userInfo", JSON.stringify(data));
-      // dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+      localStorage.setItem("connector-token", JSON.stringify(data.token));
+      dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     } catch (err) {
-      console.log(err.response.data);
-      // dispatch({
-      //   type: USER_REGISTER_ERROR,
-      //   payload:
-      //     err.response && err.response.data.message
-      //       ? err.response.data.message
-      //       : err.response,
-      // });
+      console.log("1122", err.response.data);
+      localStorage.removeItem("connector-token");
+      // Show error validation from backend
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => {
+          dispatch({ type: SET_ALERT, payload: error });
+        });
+      }
+
+      dispatch({
+        type: USER_REGISTER_ERROR,
+        payload:
+          err.response && err.response.data.errors
+            ? err.response.data.errors
+            : err.response,
+      });
     }
   };
 

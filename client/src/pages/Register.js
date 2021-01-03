@@ -66,13 +66,17 @@ const Register = ({ history, location }) => {
 
   const { name, email, password, password2 } = userInput;
 
-  // const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
+  console.log("redirect", redirect);
 
   // useEffect(() => {
-  //   if (user) {
+  //   if (errors) {
+  //     setSnackbarOpen(true);
+  //   } else {
   //     history.push(redirect);
   //   }
-  // }, [history, redirect, user]);
+  // }, [history, redirect, errors]);
 
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
@@ -86,6 +90,12 @@ const Register = ({ history, location }) => {
     } else {
       console.log("OK");
       registerUser(name, email, password);
+      if (errors) {
+        setSnackbarOpen(true);
+      } else {
+        console.log("here redirect");
+        history.push(redirect);
+      }
     }
   };
 
@@ -104,7 +114,7 @@ const Register = ({ history, location }) => {
       {errors && (
         <Snackbar
           open={snackbarOpen}
-          autoHideDuration={6000}
+          autoHideDuration={3000}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",

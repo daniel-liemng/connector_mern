@@ -26,10 +26,12 @@ const userReducer = (state, action) => {
     case USER_REGISTER_REQUEST:
       return { ...state, user_register_loading: true };
     case USER_REGISTER_SUCCESS:
-      return { ...state, user_register_loading: false, user: payload };
+      return { ...state, user_register_loading: false, isAuthenticated: true };
     case USER_REGISTER_ERROR:
       return {
         ...state,
+        token: null,
+        isAuthenticated: false,
         user_register_loading: false,
         user_register_error: payload,
       };
