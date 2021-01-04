@@ -7,6 +7,8 @@ import {
   USER_LOGIN_ERROR,
   SET_ALERT,
   REMOVE_ALERT,
+  USER_LOADED,
+  AUTH_ERROR,
 } from "../actionTypes";
 
 const userReducer = (state, action) => {
@@ -40,6 +42,21 @@ const userReducer = (state, action) => {
       return { ...state, errors: [...state.errors, payload] };
     case REMOVE_ALERT:
       return { ...state, errors: [] };
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user_loading: false,
+        user: payload,
+      };
+    case AUTH_ERROR:
+      return {
+        ...state,
+        user_loading: false,
+        token: null,
+        isAuthenticated: false,
+        user: null,
+      };
     default:
       return state;
   }

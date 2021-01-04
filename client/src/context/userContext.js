@@ -11,19 +11,23 @@ import {
   USER_LOGIN_ERROR,
   SET_ALERT,
   REMOVE_ALERT,
+  USER_LOADED,
+  AUTH_ERROR,
 } from "../actionTypes";
+import setAuthToken from "../utils/setAuthToken";
 
 const UserContext = createContext();
 
 const getTokenFromLocalStorage = () =>
-  localStorage.getItem("connector-token")
-    ? JSON.parse(localStorage.getItem("connector-token"))
+  localStorage.getItem("connector_token")
+    ? JSON.parse(localStorage.getItem("connector_token"))
     : null;
 
 const initialState = {
   token: getTokenFromLocalStorage(),
   isAuthenticated: null,
   user: null,
+  user_loading: true,
   user_login_loading: false,
   user_login_error: null,
   user_register_loading: false,
@@ -37,6 +41,24 @@ const UserProvider = ({ children }) => {
   // useEffect(() => {
   //   getTokenFromLocalStorage();
   // }, [getTokenFromLocalStorage]);
+
+  // Load userInfo
+  const loadUser = async () => {
+    const token = JSON.parse(localStorage.getItem("connector_token"));
+
+    if (token) {
+      setAuthToken(token);
+    }
+
+    try {
+      const { data } = await axios.get("/api/auth");
+
+      dispatch({ type: USER_LOADED, payload: data });
+    } catch (err) {
+      // localStorage.removeItem("connector_token");
+      dispatch({ type: AUTH_ERROR });
+    }
+  };
 
   const registerUser = async (name, email, password) => {
     // loading
@@ -56,11 +78,12 @@ const UserProvider = ({ children }) => {
       );
 
       console.log("aaa", data);
-      localStorage.setItem("connector-token", JSON.stringify(data.token));
+      localStorage.setItem("connector_token", JSON.stringify(data.token));
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     } catch (err) {
       console.log("1122", err.response.data);
-      localStorage.removeItem("connector-token");
+      // localStorage.removeItem("connector_token");
+
       // Show error validation from backend
       const errors = err.response.data.errors;
 
@@ -97,7 +120,7 @@ const UserProvider = ({ children }) => {
       );
 
       console.log("aaa", data);
-      localStorage.setItem("event-userInfo", JSON.stringify(data));
+      localStorage.setItem("connector_token", JSON.stringify(data));
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     } catch (err) {
       console.log(err.response.data);
@@ -121,7 +144,14 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ ...state, registerUser, loginUser, setAlert, removeAlert }}
+      value={{
+        ...state,
+        registerUser,
+        loginUser,
+        setAlert,
+        removeAlert,
+        loadUser,
+      }}
     >
       {children}
     </UserContext.Provider>
