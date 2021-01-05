@@ -4,11 +4,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { useUserContext } from "./context/userContext";
 import setAuthToken from "./utils/setAuthToken";
+import AuthRoute from "./utils/AuthRoute";
 
 import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const { loadUser, token } = useUserContext();
@@ -25,6 +27,7 @@ const App = () => {
         <Route exact path='/' component={Home} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
+        <AuthRoute exact path='/dashboard' component={Dashboard} />
       </Switch>
     </Router>
   );

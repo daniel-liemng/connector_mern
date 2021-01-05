@@ -110,7 +110,7 @@ const Login = () => {
           />
         </Snackbar>
       )}
-      s
+
       <Paper elevation={0} className={classes.paper}>
         <Typography
           variant='h4'
