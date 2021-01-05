@@ -15,6 +15,8 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Hidden from "@material-ui/core/Hidden";
 
+import { useUserContext } from "../../context/userContext";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -36,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
+  const { user_loading, isAuthenticated, logout } = useUserContext();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -47,17 +50,9 @@ const Navbar = () => {
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
       >
-        <List>
-          <ListItem button component={Link} to='/events'>
-            <ListItemText>All Events</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to='/login'>
-            <ListItemText>Login</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to='/register'>
-            <ListItemText>Register</ListItemText>
-          </ListItem>
-        </List>
+        {!user_loading && (
+          <>{isAuthenticated ? authLinksSide() : guestLinksSide()}</>
+        )}
       </div>
     );
   };
@@ -68,6 +63,50 @@ const Navbar = () => {
     }
     setSidebarOpen(value);
   };
+
+  // Navbar
+  const authLinksNav = () => (
+    <>
+      <Button onClick={logout} color='inherit'>
+        Logout
+      </Button>
+    </>
+  );
+  const guestLinksNav = () => (
+    <>
+      <Button component={Link} to='/developers' color='inherit'>
+        Developers
+      </Button>
+      <Button component={Link} to='/login' color='inherit'>
+        Login
+      </Button>
+      <Button component={Link} to='/register' color='inherit'>
+        Regsiter
+      </Button>
+    </>
+  );
+
+  // Sidebar
+  const authLinksSide = () => (
+    <List>
+      <ListItem button onClick={logout}>
+        <ListItemText>Logout</ListItemText>
+      </ListItem>
+    </List>
+  );
+  const guestLinksSide = () => (
+    <List>
+      <ListItem button component={Link} to='/events'>
+        <ListItemText>All Events</ListItemText>
+      </ListItem>
+      <ListItem button component={Link} to='/login'>
+        <ListItemText>Login</ListItemText>
+      </ListItem>
+      <ListItem button component={Link} to='/register'>
+        <ListItemText>Register</ListItemText>
+      </ListItem>
+    </List>
+  );
 
   return (
     <div className={classes.root}>
@@ -98,15 +137,9 @@ const Navbar = () => {
             </Link>
           </Typography>
           <Hidden smDown>
-            <Button component={Link} to='/developers' color='inherit'>
-              Developers
-            </Button>
-            <Button component={Link} to='/login' color='inherit'>
-              Login
-            </Button>
-            <Button component={Link} to='/register' color='inherit'>
-              Regsiter
-            </Button>
+            {!user_loading && (
+              <>{isAuthenticated ? authLinksNav() : guestLinksNav()}</>
+            )}
           </Hidden>
         </Toolbar>
       </AppBar>

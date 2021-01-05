@@ -10,10 +10,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-// if (localStorage.connector_token) {
-//   setAuthToken(localStorage.connector_token);
-// }
-
 const App = () => {
   const { loadUser, token } = useUserContext();
 

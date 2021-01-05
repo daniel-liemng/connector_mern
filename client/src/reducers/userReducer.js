@@ -9,6 +9,7 @@ import {
   REMOVE_ALERT,
   USER_LOADED,
   AUTH_ERROR,
+  LOGOUT,
 } from "../actionTypes";
 
 const userReducer = (state, action) => {
@@ -68,6 +69,15 @@ const userReducer = (state, action) => {
         user: payload,
       };
     case AUTH_ERROR:
+      localStorage.removeItem("connector_token");
+      return {
+        ...state,
+        user_loading: false,
+        token: null,
+        isAuthenticated: false,
+        user: null,
+      };
+    case LOGOUT:
       localStorage.removeItem("connector_token");
       return {
         ...state,

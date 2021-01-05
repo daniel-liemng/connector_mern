@@ -13,6 +13,7 @@ import {
   REMOVE_ALERT,
   USER_LOADED,
   AUTH_ERROR,
+  LOGOUT,
 } from "../actionTypes";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -42,6 +43,7 @@ const UserProvider = ({ children }) => {
   const loadUser = async () => {
     const token = JSON.parse(localStorage.getItem("connector_token"));
 
+    // Set Authorization Headers for axios
     if (token) {
       setAuthToken(token);
     }
@@ -141,6 +143,11 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  //// Logout
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+  };
+
   const setAlert = (msg, type) => {
     dispatch({ type: SET_ALERT, payload: { msg, type } });
   };
@@ -158,6 +165,7 @@ const UserProvider = ({ children }) => {
         setAlert,
         removeAlert,
         loadUser,
+        logout,
       }}
     >
       {children}
