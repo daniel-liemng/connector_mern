@@ -67,6 +67,9 @@ const Navbar = () => {
   // Navbar
   const authLinksNav = () => (
     <>
+      <Button component={Link} to='/dashboard' color='inherit'>
+        Dashboard
+      </Button>
       <Button onClick={logout} color='inherit'>
         Logout
       </Button>
@@ -89,6 +92,9 @@ const Navbar = () => {
   // Sidebar
   const authLinksSide = () => (
     <List>
+      <ListItem button component={Link} to='/dashboard'>
+        <ListItemText>Dashboard</ListItemText>
+      </ListItem>
       <ListItem button onClick={logout}>
         <ListItemText>Logout</ListItemText>
       </ListItem>

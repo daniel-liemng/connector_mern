@@ -14,6 +14,7 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGOUT,
+  PROFILE_CLEAR,
 } from "../actionTypes";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -145,6 +146,7 @@ const UserProvider = ({ children }) => {
 
   //// Logout
   const logout = () => {
+    dispatch({ type: PROFILE_CLEAR });
     dispatch({ type: LOGOUT });
   };
 
