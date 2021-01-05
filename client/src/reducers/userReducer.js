@@ -18,21 +18,39 @@ const userReducer = (state, action) => {
     case USER_LOGIN_REQUEST:
       return { ...state, user_login_loading: true };
     case USER_LOGIN_SUCCESS:
-      return { ...state, user_login_loading: false, user: payload };
-    case USER_LOGIN_ERROR:
+      localStorage.setItem("connector_token", JSON.stringify(payload.token));
       return {
         ...state,
         user_login_loading: false,
-        user_login_error: payload,
+        isAuthenticated: true,
+        token: payload.token,
+      };
+    case USER_LOGIN_ERROR:
+      localStorage.removeItem("connector_token");
+      return {
+        ...state,
+        token: null,
+        user: null,
+        isAuthenticated: false,
+        user_register_loading: false,
+        user_register_error: payload,
       };
     case USER_REGISTER_REQUEST:
       return { ...state, user_register_loading: true };
     case USER_REGISTER_SUCCESS:
-      return { ...state, user_register_loading: false, isAuthenticated: true };
+      localStorage.setItem("connector_token", JSON.stringify(payload.token));
+      return {
+        ...state,
+        user_register_loading: false,
+        isAuthenticated: true,
+        token: payload.token,
+      };
     case USER_REGISTER_ERROR:
+      localStorage.removeItem("connector_token");
       return {
         ...state,
         token: null,
+        user: null,
         isAuthenticated: false,
         user_register_loading: false,
         user_register_error: payload,
@@ -50,6 +68,7 @@ const userReducer = (state, action) => {
         user: payload,
       };
     case AUTH_ERROR:
+      localStorage.removeItem("connector_token");
       return {
         ...state,
         user_loading: false,

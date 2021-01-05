@@ -38,11 +38,7 @@ const initialState = {
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // useEffect(() => {
-  //   getTokenFromLocalStorage();
-  // }, [getTokenFromLocalStorage]);
-
-  // Load userInfo
+  //// Load userInfo every single time the main component loads
   const loadUser = async () => {
     const token = JSON.parse(localStorage.getItem("connector_token"));
 
@@ -55,11 +51,11 @@ const UserProvider = ({ children }) => {
 
       dispatch({ type: USER_LOADED, payload: data });
     } catch (err) {
-      // localStorage.removeItem("connector_token");
       dispatch({ type: AUTH_ERROR });
     }
   };
 
+  //// Register
   const registerUser = async (name, email, password) => {
     // loading
     dispatch({ type: USER_REGISTER_REQUEST });
@@ -77,12 +73,12 @@ const UserProvider = ({ children }) => {
         config
       );
 
-      console.log("aaa", data);
-      localStorage.setItem("connector_token", JSON.stringify(data.token));
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+
+      // Load User
+      loadUser();
     } catch (err) {
       console.log("1122", err.response.data);
-      // localStorage.removeItem("connector_token");
 
       // Show error validation from backend
       const errors = err.response.data.errors;
@@ -103,6 +99,7 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  //// Login
   const loginUser = async (email, password) => {
     dispatch({ type: USER_LOGIN_REQUEST });
 
@@ -119,16 +116,26 @@ const UserProvider = ({ children }) => {
         config
       );
 
-      console.log("aaa", data);
-      localStorage.setItem("connector_token", JSON.stringify(data));
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+
+      // Load User
+      loadUser();
     } catch (err) {
       console.log(err.response.data);
+      // Show error validation from backend
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => {
+          dispatch({ type: SET_ALERT, payload: error });
+        });
+      }
+
       dispatch({
         type: USER_LOGIN_ERROR,
         payload:
-          err.response && err.response.data.message
-            ? err.response.data.message
+          err.response && err.response.data.errors
+            ? err.response.data.errors
             : err.response,
       });
     }

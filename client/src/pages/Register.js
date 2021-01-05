@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -9,7 +9,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 
 import { useUserContext } from "../context/userContext";
 import Message from "../components/Message";
-import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,17 +42,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = ({ history, location }) => {
+const Register = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
 
   const {
-    // user,
-    // user_register_loading: loading,
-    // user_register_error: error,
-    errors,
     registerUser,
+    errors,
     setAlert,
     removeAlert,
+    isAuthenticated,
   } = useUserContext();
 
   const [userInput, setUserInput] = useState({
@@ -66,17 +65,16 @@ const Register = ({ history, location }) => {
 
   const { name, email, password, password2 } = userInput;
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search
+    ? location.search.split("=")[1]
+    : "/dashboard";
 
-  console.log("redirect", redirect);
-
-  // useEffect(() => {
-  //   if (errors) {
-  //     setSnackbarOpen(true);
-  //   } else {
-  //     history.push(redirect);
-  //   }
-  // }, [history, redirect, errors]);
+  // Redirect if logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(redirect);
+    }
+  }, [isAuthenticated, history, redirect]);
 
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
@@ -88,13 +86,10 @@ const Register = ({ history, location }) => {
       setAlert("Password not match", "error");
       setSnackbarOpen(true);
     } else {
-      console.log("OK");
       registerUser(name, email, password);
+
       if (errors) {
         setSnackbarOpen(true);
-      } else {
-        console.log("here redirect");
-        history.push(redirect);
       }
     }
   };
@@ -107,7 +102,7 @@ const Register = ({ history, location }) => {
     removeAlert();
   };
 
-  console.log("EROR", errors);
+  // console.log("EROR", errors);
 
   return (
     <Container maxWidth='sm'>

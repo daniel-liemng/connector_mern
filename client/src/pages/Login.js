@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import { Button, Typography } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
 
 import { useUserContext } from "../context/userContext";
 import Message from "../components/Message";
-import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,32 +42,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ history, location }) => {
+const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
 
-  const {
-    // user,
-    // user_register_loading: loading,
-    // user_register_error: error,
-    loginUser,
-  } = useUserContext();
+  const { loginUser, errors, removeAlert, isAuthenticated } = useUserContext();
 
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { email, password } = userInput;
 
-  const [message, setMessage] = useState(null);
+  const redirect = location.search
+    ? location.search.split("=")[1]
+    : "/dashboard";
 
-  // const redirect = location.search ? location.search.split("=")[1] : "/";
-
-  // useEffect(() => {
-  //   if (user) {
-  //     history.push(redirect);
-  //   }
-  // }, [history, redirect, user]);
+  // Redirect if logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(redirect);
+    }
+  }, [isAuthenticated, history, redirect]);
 
   const handleChange = (e) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
@@ -76,22 +75,42 @@ const Login = ({ history, location }) => {
     e.preventDefault();
 
     loginUser(email, password);
+
+    if (errors) {
+      setSnackbarOpen(true);
+    }
   };
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    setMessage(null);
+    setSnackbarOpen(false);
+    removeAlert();
   };
 
-  // console.log("error", message);
-  // console.log("123register", error);
-
-  // console.log("aa", userInput);
+  // console.log("EROR", errors);
 
   return (
     <Container maxWidth='sm'>
+      {errors && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={handleSnackbarClose}
+        >
+          <Message
+            handleClose={handleSnackbarClose}
+            type='error'
+            message={errors.length > 0 ? errors[0].msg : null}
+          />
+        </Snackbar>
+      )}
+      s
       <Paper elevation={0} className={classes.paper}>
         <Typography
           variant='h4'
@@ -101,15 +120,6 @@ const Login = ({ history, location }) => {
         >
           Login
         </Typography>
-
-        {/* {message && (
-          <Message
-            open={message ? true : false}
-            handleClose={handleSnackbarClose}
-            message={message}
-            type='error'
-          />
-        )} */}
 
         <form
           className={classes.root}

@@ -17,7 +17,7 @@ const userRegisterValidator = [
 
 const userLoginValidator = [
   body("email", "Please provide a valid email").isEmail(),
-  body("password", "Password is required").exists(),
+  body("password", "Password is required").not().isEmpty(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -15,11 +15,11 @@ import Register from "./pages/Register";
 // }
 
 const App = () => {
-  const { loadUser } = useUserContext();
+  const { loadUser, token } = useUserContext();
 
   useEffect(() => {
     loadUser();
-  }, []);
+  }, [token]);
 
   return (
     <Router>
