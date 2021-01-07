@@ -2,9 +2,10 @@ import React, { createContext, useContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 import reducer from "../reducers/profileReducer";
-import { useUserContext } from "./userContext";
+
 import {
   PROFILE_GET,
+  PROFILE_UPDATE,
   PROFILE_ERROR,
   PROFILE_CLEAR,
   SET_ALERT,
@@ -23,14 +24,7 @@ const initialState = {
 };
 
 const ProfileProvider = ({ children }) => {
-  // const { token } = useUserContext();
-
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // useEffect(() => {
-  //   console.log("token", token);
-  //   dispatch({ type: PROFILE_CLEAR });
-  // }, [token]);
 
   //// Get current users profile
   const getCurrentProfile = async () => {
@@ -97,6 +91,94 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
+  //// Add Experience
+  const addExperience = async (formData, history) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        "/api/profile/experience",
+        formData,
+        config
+      );
+
+      dispatch({ type: PROFILE_UPDATE, payload: data });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Experience Added", type: "success" },
+      });
+
+      // Redirect
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 3000);
+    } catch (err) {
+      console.log(err.response.data);
+      // Show error validation from backend
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => {
+          dispatch({ type: SET_ALERT, payload: error });
+        });
+      }
+
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
+  //// Add Education
+  const addEducation = async (formData, history) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        "/api/profile/education",
+        formData,
+        config
+      );
+
+      dispatch({ type: PROFILE_UPDATE, payload: data });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Education Added", type: "success" },
+      });
+
+      // Redirect
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 3000);
+    } catch (err) {
+      console.log(err.response.data);
+      // Show error validation from backend
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => {
+          dispatch({ type: SET_ALERT, payload: error });
+        });
+      }
+
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
   const removeAlert = () => {
     dispatch({ type: REMOVE_ALERT });
   };
@@ -113,6 +195,8 @@ const ProfileProvider = ({ children }) => {
         createProfile,
         removeAlert,
         clearProfile,
+        addExperience,
+        addEducation,
       }}
     >
       {children}

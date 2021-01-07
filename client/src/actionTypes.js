@@ -17,6 +17,7 @@ export const LOGOUT = "LOGOUT";
 
 //// PROFILE ////
 export const PROFILE_GET = "PROFILE_GET";
+export const PROFILE_UPDATE = "PROFILE_UPDATE"; // for adding exprience and education
 export const PROFILE_ERROR = "PROFILE_ERROR";
 
 export const PROFILE_CLEAR = "PROFILE_CLEAR";

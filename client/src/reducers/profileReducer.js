@@ -1,5 +1,6 @@
 import {
   PROFILE_GET,
+  PROFILE_UPDATE,
   PROFILE_ERROR,
   PROFILE_CLEAR,
   SET_ALERT,
@@ -11,6 +12,7 @@ const profileReducer = (state, action) => {
 
   switch (type) {
     case PROFILE_GET:
+    case PROFILE_UPDATE:
       return { ...state, loading: false, profile: payload };
     case PROFILE_ERROR:
       return { ...state, loading: false, error: payload };
