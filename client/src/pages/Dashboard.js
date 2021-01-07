@@ -9,6 +9,7 @@ import { useProfileContext } from "../context/profileContext";
 import { useUserContext } from "../context/userContext";
 import DashboardActions from "../components/dashboard/DashboardActions";
 import Experience from "../components/dashboard/Experience";
+import Education from "../components/dashboard/Education";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -49,6 +50,7 @@ const Dashboard = () => {
           <>
             <DashboardActions />
             <Experience experience={profile.experience} />
+            <Education education={profile.education} />
           </>
         ) : (
           <>

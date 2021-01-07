@@ -116,7 +116,7 @@ const ProfileProvider = ({ children }) => {
       // Redirect
       setTimeout(() => {
         history.push("/dashboard");
-      }, 3000);
+      }, 2000);
     } catch (err) {
       console.log(err.response.data);
       // Show error validation from backend
@@ -160,7 +160,7 @@ const ProfileProvider = ({ children }) => {
       // Redirect
       setTimeout(() => {
         history.push("/dashboard");
-      }, 3000);
+      }, 2000);
     } catch (err) {
       console.log(err.response.data);
       // Show error validation from backend

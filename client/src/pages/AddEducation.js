@@ -168,7 +168,7 @@ const AddEducation = () => {
           />
 
           <TextField
-            label='Field of Study'
+            label='* Field of Study'
             placeholder='Field of Study'
             fullWidth
             style={{ margin: 8 }}
@@ -203,7 +203,11 @@ const AddEducation = () => {
                   name='current'
                   checked={current}
                   onChange={(e) => {
-                    setFormData({ ...formData, current: e.target.checked });
+                    setFormData({
+                      ...formData,
+                      current: e.target.checked,
+                      to: null,
+                    });
                     toggleDisabled(!toDateDisabled);
                   }}
                 />
