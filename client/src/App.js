@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import CreateProfile from "./pages/CreateProfile";
+import EditProfile from "./pages/EditProfile";
 
 const App = () => {
   const { loadUser, token } = useUserContext();
@@ -30,6 +31,7 @@ const App = () => {
         <Route exact path='/register' component={Register} />
         <AuthRoute exact path='/dashboard' component={Dashboard} />
         <AuthRoute exact path='/create-profile' component={CreateProfile} />
+        <AuthRoute exact path='/edit-profile' component={EditProfile} />
       </Switch>
     </Router>
   );

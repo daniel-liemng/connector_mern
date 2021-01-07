@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -50,11 +50,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateProfile = () => {
+const EditProfile = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { createProfile, errors, removeAlert } = useProfileContext();
+  const {
+    profile,
+    loading,
+    createProfile,
+    getCurrentProfile,
+    errors,
+    removeAlert,
+  } = useProfileContext();
 
   const [socialToggle, setSocialToggle] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -89,12 +96,35 @@ const CreateProfile = () => {
     instagram,
   } = formData;
 
+  // Get current profile to fill the form
+  useEffect(() => {
+    getCurrentProfile();
+
+    // Set the form with input
+    // To avoid the undefined data of the <input> with no data filled -> value={name || ''}
+    setFormData({
+      company: loading || !profile.company ? "" : profile.company,
+      website: loading || !profile.website ? "" : profile.website,
+      location: loading || !profile.location ? "" : profile.location,
+      status: loading || !profile.status ? "" : profile.status,
+      skills: loading || !profile.skills ? "" : profile.skills.join(","),
+      githubusername:
+        loading || !profile.githubusername ? "" : profile.githubusername,
+      bio: loading || !profile.bio ? "" : profile.bio,
+      twitter: loading || !profile.social ? "" : profile.social.twitter,
+      facebook: loading || !profile.social ? "" : profile.social.facebook,
+      linkedin: loading || !profile.social ? "" : profile.social.linkedin,
+      youtube: loading || !profile.social ? "" : profile.social.youtube,
+      instagram: loading || !profile.social ? "" : profile.social.instagram,
+    });
+  }, [loading]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleCreateProfile = (e) => {
+  const handleEditProfile = (e) => {
     e.preventDefault();
-    createProfile(formData, history);
+    createProfile(formData, history, true);
 
     if (errors) {
       setSnackbarOpen(true);
@@ -123,7 +153,7 @@ const CreateProfile = () => {
           ),
         }}
         name='twitter'
-        value={twitter}
+        value={twitter || ""}
         onChange={handleChange}
       />
       <TextField
@@ -138,7 +168,7 @@ const CreateProfile = () => {
           ),
         }}
         name='facebook'
-        value={facebook}
+        value={facebook || ""}
         onChange={handleChange}
       />
       <TextField
@@ -153,7 +183,7 @@ const CreateProfile = () => {
           ),
         }}
         name='youtube'
-        value={youtube}
+        value={youtube || ""}
         onChange={handleChange}
       />
       <TextField
@@ -168,7 +198,7 @@ const CreateProfile = () => {
           ),
         }}
         name='linkedin'
-        value={linkedin}
+        value={linkedin || ""}
         onChange={handleChange}
       />
       <TextField
@@ -183,7 +213,7 @@ const CreateProfile = () => {
           ),
         }}
         name='instagram'
-        value={instagram}
+        value={instagram || ""}
         onChange={handleChange}
       />
     </>
@@ -217,7 +247,7 @@ const CreateProfile = () => {
           className={classes.title}
           color='primary'
         >
-          Create Your Profile
+          Edit Your Profile
         </Typography>
         <Typography variant='h6'>
           Let's get some information to make your profile stand out
@@ -229,7 +259,7 @@ const CreateProfile = () => {
           className={classes.root}
           noValidate
           autoComplete='off'
-          onSubmit={handleCreateProfile}
+          onSubmit={handleEditProfile}
         >
           <TextField
             label='* Status'
@@ -238,7 +268,7 @@ const CreateProfile = () => {
             style={{ margin: 8 }}
             margin='normal'
             name='status'
-            value={status}
+            value={status || ""}
             onChange={handleChange}
             helperText='Please select your professional status'
           >
@@ -251,6 +281,7 @@ const CreateProfile = () => {
             <MenuItem value='Intern'>Intern</MenuItem>
             <MenuItem value='Other'>Other</MenuItem>
           </TextField>
+
           <TextField
             label='Company'
             placeholder='ABC Company'
@@ -261,9 +292,10 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='company'
-            value={company}
+            value={company || ""}
             onChange={handleChange}
           />
+
           <TextField
             label='Website'
             placeholder='abcCompany.com'
@@ -274,9 +306,10 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='website'
-            value={website}
+            value={website || ""}
             onChange={handleChange}
           />
+
           <TextField
             label='Location'
             placeholder='Location'
@@ -287,9 +320,10 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='location'
-            value={location}
+            value={location || ""}
             onChange={handleChange}
           />
+
           <TextField
             label='* Skills'
             placeholder='* Skills'
@@ -300,9 +334,10 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='skills'
-            value={skills}
+            value={skills || ""}
             onChange={handleChange}
           />
+
           <TextField
             label='Github Username'
             placeholder='Github Username'
@@ -313,9 +348,10 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='githubusername'
-            value={githubusername}
+            value={githubusername || ""}
             onChange={handleChange}
           />
+
           <TextField
             label='Bio'
             placeholder='A short bio of yourself'
@@ -328,7 +364,7 @@ const CreateProfile = () => {
               shrink: true,
             }}
             name='bio'
-            value={bio}
+            value={bio || ""}
             onChange={handleChange}
           />
 
@@ -349,7 +385,7 @@ const CreateProfile = () => {
               color='primary'
               className={classes.submitBtn}
             >
-              Create Profile
+              Edit Profile
             </Button>
             <Button
               component={Link}
@@ -367,4 +403,4 @@ const CreateProfile = () => {
   );
 };
 
-export default CreateProfile;
+export default EditProfile;

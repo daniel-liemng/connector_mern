@@ -7,6 +7,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Loading from "../components/Loading";
 import { useProfileContext } from "../context/profileContext";
 import { useUserContext } from "../context/userContext";
+import DashboardActions from "../components/DashboardActions";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -44,7 +45,7 @@ const Dashboard = () => {
           Welcome {user && user.name}
         </Typography>
         {profile !== null ? (
-          <>has</>
+          <DashboardActions />
         ) : (
           <>
             <Typography variant='body1'>

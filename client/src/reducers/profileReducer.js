@@ -21,6 +21,7 @@ const profileReducer = (state, action) => {
         profile: null,
         repos: [],
         error: null,
+        errors: [],
       };
     case SET_ALERT:
       console.log("payload", payload);

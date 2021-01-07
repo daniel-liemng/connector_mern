@@ -2,9 +2,11 @@ import React, { createContext, useContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 import reducer from "../reducers/profileReducer";
+import { useUserContext } from "./userContext";
 import {
   PROFILE_GET,
   PROFILE_ERROR,
+  PROFILE_CLEAR,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -21,7 +23,14 @@ const initialState = {
 };
 
 const ProfileProvider = ({ children }) => {
+  // const { token } = useUserContext();
+
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // useEffect(() => {
+  //   console.log("token", token);
+  //   dispatch({ type: PROFILE_CLEAR });
+  // }, [token]);
 
   //// Get current users profile
   const getCurrentProfile = async () => {
@@ -66,7 +75,9 @@ const ProfileProvider = ({ children }) => {
 
       // Redirect if creating, stay if updating
       if (!edit) {
-        history.push("/dashboard");
+        setTimeout(() => {
+          history.push("/dashboard");
+        }, 3000);
       }
     } catch (err) {
       console.log(err.response.data);
@@ -90,9 +101,19 @@ const ProfileProvider = ({ children }) => {
     dispatch({ type: REMOVE_ALERT });
   };
 
+  const clearProfile = () => {
+    dispatch({ type: PROFILE_CLEAR });
+  };
+
   return (
     <ProfileContext.Provider
-      value={{ ...state, getCurrentProfile, createProfile, removeAlert }}
+      value={{
+        ...state,
+        getCurrentProfile,
+        createProfile,
+        removeAlert,
+        clearProfile,
+      }}
     >
       {children}
     </ProfileContext.Provider>

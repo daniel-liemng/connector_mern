@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 import reducer from "../reducers/userReducer";
+
 import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
@@ -14,7 +15,6 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGOUT,
-  PROFILE_CLEAR,
 } from "../actionTypes";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -146,7 +146,7 @@ const UserProvider = ({ children }) => {
 
   //// Logout
   const logout = () => {
-    dispatch({ type: PROFILE_CLEAR });
+    // dispatch({ type: PROFILE_CLEAR });
     dispatch({ type: LOGOUT });
   };
 
