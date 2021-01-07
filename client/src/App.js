@@ -33,6 +33,7 @@ const App = () => {
         <Route exact path='/register' component={Register} />
         <AuthRoute exact path='/dashboard' component={Dashboard} />
         <AuthRoute exact path='/create-profile' component={CreateProfile} />
+        <AuthRoute exact path='/edit-profile' component={EditProfile} />
         <AuthRoute exact path='/add-experience' component={AddExperience} />
         <AuthRoute exact path='/add-education' component={AddEducation} />
       </Switch>

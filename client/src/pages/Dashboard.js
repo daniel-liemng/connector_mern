@@ -7,7 +7,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import Loading from "../components/Loading";
 import { useProfileContext } from "../context/profileContext";
 import { useUserContext } from "../context/userContext";
-import DashboardActions from "../components/DashboardActions";
+import DashboardActions from "../components/dashboard/DashboardActions";
+import Experience from "../components/dashboard/Experience";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -45,7 +46,10 @@ const Dashboard = () => {
           Welcome {user && user.name}
         </Typography>
         {profile !== null ? (
-          <DashboardActions />
+          <>
+            <DashboardActions />
+            <Experience experience={profile.experience} />
+          </>
         ) : (
           <>
             <Typography variant='body1'>

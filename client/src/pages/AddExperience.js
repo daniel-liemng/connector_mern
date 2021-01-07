@@ -91,6 +91,8 @@ const AddExperience = () => {
     removeAlert();
   };
 
+  console.log("123", formData);
+
   return (
     <Container maxWidth='sm'>
       {errors && (
@@ -195,7 +197,11 @@ const AddExperience = () => {
                   name='current'
                   checked={current}
                   onChange={(e) => {
-                    setFormData({ ...formData, current: e.target.checked });
+                    setFormData({
+                      ...formData,
+                      current: e.target.checked,
+                      to: null,
+                    });
                     toggleDisabled(!toDateDisabled);
                   }}
                 />
@@ -211,6 +217,7 @@ const AddExperience = () => {
             format='MM/dd/yyyy'
             margin='normal'
             id='date-picker-inline'
+            minDate='null'
             name='to'
             value={to}
             onChange={(e, date) => setFormData({ ...formData, to: date })}
