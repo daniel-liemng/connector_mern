@@ -1,4 +1,10 @@
-import { PROFILE_GET, PROFILE_ERROR, PROFILE_CLEAR } from "../actionTypes";
+import {
+  PROFILE_GET,
+  PROFILE_ERROR,
+  PROFILE_CLEAR,
+  SET_ALERT,
+  REMOVE_ALERT,
+} from "../actionTypes";
 
 const profileReducer = (state, action) => {
   const { type, payload } = action;
@@ -16,6 +22,11 @@ const profileReducer = (state, action) => {
         repos: [],
         error: null,
       };
+    case SET_ALERT:
+      console.log("payload", payload);
+      return { ...state, errors: [...state.errors, payload] };
+    case REMOVE_ALERT:
+      return { ...state, errors: [] };
     default:
       return state;
   }

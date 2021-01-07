@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -17,6 +17,10 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import InstagramIcon from "@material-ui/icons/Instagram";
+
+import { useProfileContext } from "../context/profileContext";
+import { useUserContext } from "../context/userContext";
+import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,8 +52,12 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateProfile = () => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const { createProfile, errors, removeAlert } = useProfileContext();
 
   const [socialToggle, setSocialToggle] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [formData, setFormDate] = useState({
     company: "",
@@ -86,6 +94,19 @@ const CreateProfile = () => {
   };
   const handleCreateProfile = (e) => {
     e.preventDefault();
+    createProfile(formData, history);
+
+    if (errors) {
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+    removeAlert();
   };
 
   const socialInput = () => (
@@ -172,6 +193,23 @@ const CreateProfile = () => {
 
   return (
     <Container maxWidth='sm'>
+      {errors && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={handleSnackbarClose}
+        >
+          <Message
+            handleClose={handleSnackbarClose}
+            type='error'
+            message={errors.length > 0 ? errors[0].msg : null}
+          />
+        </Snackbar>
+      )}
       <Paper elevation={0} className={classes.paper}>
         <Typography
           variant='h4'
