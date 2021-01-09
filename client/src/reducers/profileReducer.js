@@ -20,7 +20,7 @@ const profileReducer = (state, action) => {
     case PROFILES_GET:
       return { ...state, loading: false, profiles: payload };
     case PROFILE_ERROR:
-      return { ...state, loading: false, error: payload };
+      return { ...state, loading: false, error: payload, profile: null };
     case PROFILE_CLEAR:
       return {
         ...state,
