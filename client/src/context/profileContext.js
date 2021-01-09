@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 
 import reducer from "../reducers/profileReducer";
 
 import {
   PROFILE_GET,
+  PROFILES_GET,
   PROFILE_UPDATE,
   PROFILE_ERROR,
   PROFILE_CLEAR,
+  GET_REPOS,
   ACCOUNT_DELETED,
   SET_ALERT,
   REMOVE_ALERT,
@@ -34,6 +36,54 @@ const ProfileProvider = ({ children }) => {
 
       console.log("data", data);
       dispatch({ type: PROFILE_GET, payload: data });
+    } catch (err) {
+      console.log("err", err);
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
+  //// Get all profiles
+  const getProfiles = async () => {
+    // Clear the current profile
+    dispatch({ type: PROFILE_CLEAR });
+
+    try {
+      const { data } = await axios.get("/api/profile");
+
+      dispatch({ type: PROFILES_GET, payload: data });
+    } catch (err) {
+      console.log("err", err);
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
+  //// Get profile by ID
+  const getProfileById = async (userId) => {
+    try {
+      const { data } = await axios.get(`/api/profile/user/${userId}`);
+
+      dispatch({ type: PROFILE_GET, payload: data });
+    } catch (err) {
+      console.log("err", err);
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
+  //// Get profile by ID
+  const getGithubRepos = async (username) => {
+    try {
+      const { data } = await axios.get(`/api/profile/github/${username}`);
+
+      dispatch({ type: GET_REPOS, payload: data });
     } catch (err) {
       console.log("err", err);
       dispatch({
@@ -274,6 +324,9 @@ const ProfileProvider = ({ children }) => {
         deleteExperience,
         deleteEducation,
         deleteAccount,
+        getProfiles,
+        getProfileById,
+        getGithubRepos,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const { user_loading, isAuthenticated, logout } = useUserContext();
 
@@ -67,6 +66,9 @@ const Navbar = () => {
   // Navbar
   const authLinksNav = () => (
     <>
+      <Button component={Link} to='/profiles' color='inherit'>
+        Developers
+      </Button>
       <Button component={Link} to='/dashboard' color='inherit'>
         Dashboard
       </Button>
@@ -77,7 +79,7 @@ const Navbar = () => {
   );
   const guestLinksNav = () => (
     <>
-      <Button component={Link} to='/developers' color='inherit'>
+      <Button component={Link} to='/profiles' color='inherit'>
         Developers
       </Button>
       <Button component={Link} to='/login' color='inherit'>
@@ -92,6 +94,9 @@ const Navbar = () => {
   // Sidebar
   const authLinksSide = () => (
     <List>
+      <ListItem button component={Link} to='/profiles'>
+        <ListItemText>Developers</ListItemText>
+      </ListItem>
       <ListItem button component={Link} to='/dashboard'>
         <ListItemText>Dashboard</ListItemText>
       </ListItem>
@@ -102,8 +107,8 @@ const Navbar = () => {
   );
   const guestLinksSide = () => (
     <List>
-      <ListItem button component={Link} to='/events'>
-        <ListItemText>All Events</ListItemText>
+      <ListItem button component={Link} to='/profiles'>
+        <ListItemText>Developers</ListItemText>
       </ListItem>
       <ListItem button component={Link} to='/login'>
         <ListItemText>Login</ListItemText>

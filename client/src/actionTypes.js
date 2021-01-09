@@ -13,14 +13,16 @@ export const REMOVE_ALERT = "REMOVE_ALERT";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 
-export const REMOVE_LOCALSTORAGE = "REMOVE_LOCALSTORAGE";
 export const LOGOUT = "LOGOUT";
 
 //// PROFILE ////
 export const PROFILE_GET = "PROFILE_GET";
+export const PROFILES_GET = "PROFILES_GET";
 export const PROFILE_UPDATE = "PROFILE_UPDATE"; // for adding exprience and education
 export const PROFILE_ERROR = "PROFILE_ERROR";
 
 export const PROFILE_CLEAR = "PROFILE_CLEAR";
+
+export const GET_REPOS = "GET_REPOS";
 
 export const ACCOUNT_DELETED = "ACCOUNT_DELETED";

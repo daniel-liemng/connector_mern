@@ -1,8 +1,10 @@
 import {
   PROFILE_GET,
+  PROFILES_GET,
   PROFILE_UPDATE,
   PROFILE_ERROR,
   PROFILE_CLEAR,
+  GET_REPOS,
   SET_ALERT,
   REMOVE_ALERT,
   ACCOUNT_DELETED,
@@ -15,6 +17,8 @@ const profileReducer = (state, action) => {
     case PROFILE_GET:
     case PROFILE_UPDATE:
       return { ...state, loading: false, profile: payload };
+    case PROFILES_GET:
+      return { ...state, loading: false, profiles: payload };
     case PROFILE_ERROR:
       return { ...state, loading: false, error: payload };
     case PROFILE_CLEAR:
@@ -29,6 +33,8 @@ const profileReducer = (state, action) => {
     case ACCOUNT_DELETED:
       localStorage.removeItem("connector_token");
       return { ...state };
+    case GET_REPOS:
+      return { ...state, loading: false, repos: payload };
     case SET_ALERT:
       console.log("payload", payload);
       return { ...state, errors: [...state.errors, payload] };

@@ -14,9 +14,10 @@ import CreateProfile from "./pages/CreateProfile";
 import EditProfile from "./pages/EditProfile";
 import AddExperience from "./pages/AddExperience";
 import AddEducation from "./pages/AddEducation";
+import Profiles from "./pages/Profiles";
 
 const App = () => {
-  const { loadUser, token, user_loading } = useUserContext();
+  const { loadUser, token } = useUserContext();
 
   useEffect(() => {
     loadUser();
@@ -30,6 +31,7 @@ const App = () => {
         <Route exact path='/' component={Home} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
+        <Route path='/profiles' component={Profiles} />
         <AuthRoute exact path='/dashboard' component={Dashboard} />
         <AuthRoute exact path='/create-profile' component={CreateProfile} />
         <AuthRoute exact path='/edit-profile' component={EditProfile} />

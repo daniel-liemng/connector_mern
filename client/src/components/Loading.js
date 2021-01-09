@@ -8,6 +8,8 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginLeft: theme.spacing(2),
     },
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -16,7 +18,7 @@ const Loading = () => {
 
   return (
     <div className={classes.root}>
-      <CircularProgress size='5rem' />
+      <CircularProgress size='4rem' />
     </div>
   );
 };
