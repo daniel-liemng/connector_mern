@@ -18,6 +18,8 @@ import SupervisedUserCircleOutlinedIcon from "@material-ui/icons/SupervisedUserC
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Moment from "react-moment";
 
+import { usePostContext } from "../../context/postContext";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -40,21 +42,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  btn: {
-    marginRight: "0.5rem",
-  },
-  skills: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
-    color: theme.palette.secondary.main,
-  },
 }));
 
 const PostItem = ({ post }) => {
   const classes = useStyles();
 
   const { _id, text, name, avatar, user, likes, comments, date } = post;
+
+  const { addLike, removeLike } = usePostContext();
 
   return (
     <Container>
@@ -75,21 +70,24 @@ const PostItem = ({ post }) => {
           </Typography>
 
           <div className={classes.btnGroup}>
-            <IconButton style={{ color: "blue" }}>
+            <IconButton style={{ color: "blue" }} onClick={() => addLike(_id)}>
               <Badge
                 badgeContent={likes.length > 0 ? likes.length : 0}
                 color='secondary'
                 children={<ThumbUpIcon fontSize='large' />}
               />
             </IconButton>
-            <IconButton style={{ color: "grey" }}>
-              <Badge
-                badgeContent={likes.length > 0 ? likes.length : 0}
-                color='secondary'
-                children={<ThumbDownIcon fontSize='large' />}
-              />
+            <IconButton
+              style={{ color: "grey" }}
+              onClick={() => removeLike(_id)}
+            >
+              <ThumbDownIcon fontSize='large' />
             </IconButton>
-            <IconButton style={{ color: "orange" }}>
+            <IconButton
+              style={{ color: "orange" }}
+              component={Link}
+              to={`/post/${_id}`}
+            >
               <Badge
                 badgeContent={comments.length > 0 ? comments.length : 0}
                 color='secondary'
