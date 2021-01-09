@@ -5,6 +5,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { UserProvider } from "./context/userContext";
 import { ProfileProvider } from "./context/profileContext";
+import { PostProvider } from "./context/postContext";
 
 import App from "./App";
 import theme from "./theme";
@@ -14,7 +15,9 @@ ReactDOM.render(
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <UserProvider>
         <ProfileProvider>
-          <App />
+          <PostProvider>
+            <App />
+          </PostProvider>
         </ProfileProvider>
       </UserProvider>
     </MuiPickersUtilsProvider>

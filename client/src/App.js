@@ -16,6 +16,7 @@ import AddExperience from "./pages/AddExperience";
 import AddEducation from "./pages/AddEducation";
 import Profiles from "./pages/Profiles";
 import Profile from "./pages/Profile";
+import Posts from "./pages/Posts";
 
 const App = () => {
   const { loadUser, token } = useUserContext();
@@ -39,6 +40,7 @@ const App = () => {
         <AuthRoute exact path='/edit-profile' component={EditProfile} />
         <AuthRoute exact path='/add-experience' component={AddExperience} />
         <AuthRoute exact path='/add-education' component={AddEducation} />
+        <AuthRoute path='/posts' component={Posts} />
       </Switch>
     </Router>
   );

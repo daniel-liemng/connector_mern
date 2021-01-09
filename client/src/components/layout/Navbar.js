@@ -69,6 +69,9 @@ const Navbar = () => {
       <Button component={Link} to='/profiles' color='inherit'>
         Developers
       </Button>
+      <Button component={Link} to='/posts' color='inherit'>
+        Posts
+      </Button>
       <Button component={Link} to='/dashboard' color='inherit'>
         Dashboard
       </Button>
@@ -96,6 +99,9 @@ const Navbar = () => {
     <List>
       <ListItem button component={Link} to='/profiles'>
         <ListItemText>Developers</ListItemText>
+      </ListItem>
+      <ListItem button component={Link} to='/posts'>
+        <ListItemText>Posts</ListItemText>
       </ListItem>
       <ListItem button component={Link} to='/dashboard'>
         <ListItemText>Dashboard</ListItemText>
