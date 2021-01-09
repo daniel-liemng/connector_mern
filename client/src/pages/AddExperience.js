@@ -91,8 +91,6 @@ const AddExperience = () => {
     removeAlert();
   };
 
-  console.log("123", formData);
-
   return (
     <Container maxWidth='sm'>
       {errors && (

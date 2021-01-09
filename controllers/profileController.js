@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const Post = require("../models/Post");
 
 // @route   GET api/profile/me
 // @desc    Get current, logged in user profile
@@ -140,13 +141,14 @@ const getProfileByUserId = async (req, res) => {
 // @access  Private
 const deleteProfile = async (req, res) => {
   try {
+    // Delete posts
+    await Post.deleteMany({ user: req.user.id });
+
     // Delete profile
     await Profile.findOneAndRemove({ user: req.user.id });
 
     // Delete user
     await User.findOneAndRemove({ _id: req.user.id });
-
-    // Delete posts
 
     res.json({ msg: "User, Profile deleted" });
   } catch (err) {

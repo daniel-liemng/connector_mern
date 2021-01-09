@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,6 +9,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button, Typography } from "@material-ui/core";
 import Moment from "react-moment";
+import Snackbar from "@material-ui/core/Snackbar";
+
+import { useProfileContext } from "../../context/profileContext";
+import Message from "../Message";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -44,6 +48,18 @@ const StyledTableRow = withStyles((theme) => ({
 const Experience = ({ experience }) => {
   const classes = useStyles();
 
+  const { deleteExperience, errors, removeAlert } = useProfileContext();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+    removeAlert();
+  };
+
   const experiences = experience.map((exp) => (
     <StyledTableRow key={exp._id}>
       <StyledTableCell component='th' scope='row'>
@@ -59,7 +75,16 @@ const Experience = ({ experience }) => {
         )}
       </StyledTableCell>
       <StyledTableCell>
-        <Button variant='contained' color='secondary'>
+        <Button
+          variant='contained'
+          color='secondary'
+          onClick={() => {
+            deleteExperience(exp._id);
+            if (errors) {
+              setSnackbarOpen(true);
+            }
+          }}
+        >
           Delete
         </Button>
       </StyledTableCell>
@@ -68,6 +93,23 @@ const Experience = ({ experience }) => {
 
   return (
     <TableContainer component={Paper}>
+      {errors && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={handleSnackbarClose}
+        >
+          <Message
+            handleClose={handleSnackbarClose}
+            type={errors.length > 0 ? errors[0].type : "error"}
+            message={errors.length > 0 ? errors[0].msg : null}
+          />
+        </Snackbar>
+      )}
       <Typography variant='h4' className={classes.title} color='secondary'>
         Experience Credentials
       </Typography>

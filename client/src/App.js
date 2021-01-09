@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { useUserContext } from "./context/userContext";
-import setAuthToken from "./utils/setAuthToken";
 import AuthRoute from "./utils/AuthRoute";
 
 import Navbar from "./components/layout/Navbar";
@@ -17,7 +16,7 @@ import AddExperience from "./pages/AddExperience";
 import AddEducation from "./pages/AddEducation";
 
 const App = () => {
-  const { loadUser, token } = useUserContext();
+  const { loadUser, token, user_loading } = useUserContext();
 
   useEffect(() => {
     loadUser();

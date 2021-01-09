@@ -19,7 +19,6 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
 import { useProfileContext } from "../context/profileContext";
-import { useUserContext } from "../context/userContext";
 import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({

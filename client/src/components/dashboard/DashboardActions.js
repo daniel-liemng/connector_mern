@@ -14,9 +14,19 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     marginRight: "0.5rem",
   },
+  deleteBtn: {
+    marginRight: "0.5rem",
+    backgroundColor: "red",
+    color: "white",
+  },
 }));
 
-const DashboardActions = () => {
+const DashboardActions = ({
+  deleteAccount,
+  errors,
+  setSnackbarOpen,
+  history,
+}) => {
   const classes = useStyles();
 
   return (
@@ -47,6 +57,33 @@ const DashboardActions = () => {
         className={classes.btn}
       >
         Add Education
+      </Button>
+
+      <Button
+        variant='contained'
+        className={classes.deleteBtn}
+        onClick={() => {
+          deleteAccount(history);
+          if (errors) {
+            setSnackbarOpen(true);
+          }
+        }}
+      >
+        Delete Profile
+      </Button>
+
+      {/* Just remove token in localStorage - userData, isAuth, token still in state */}
+      <Button
+        variant='contained'
+        className={classes.deleteBtn}
+        onClick={() => {
+          deleteAccount(history);
+          if (errors) {
+            setSnackbarOpen(true);
+          }
+        }}
+      >
+        Delete Account
       </Button>
     </div>
   );

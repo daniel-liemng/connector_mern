@@ -5,6 +5,7 @@ import {
   PROFILE_CLEAR,
   SET_ALERT,
   REMOVE_ALERT,
+  ACCOUNT_DELETED,
 } from "../actionTypes";
 
 const profileReducer = (state, action) => {
@@ -25,6 +26,9 @@ const profileReducer = (state, action) => {
         error: null,
         errors: [],
       };
+    case ACCOUNT_DELETED:
+      localStorage.removeItem("connector_token");
+      return { ...state };
     case SET_ALERT:
       console.log("payload", payload);
       return { ...state, errors: [...state.errors, payload] };

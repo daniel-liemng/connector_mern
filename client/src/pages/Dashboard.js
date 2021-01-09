@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, Button } from "@material-ui/core";
+import { Container, Typography, Button, Snackbar } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 
 import Loading from "../components/Loading";
+import Message from "../components/Message";
 import { useProfileContext } from "../context/profileContext";
 import { useUserContext } from "../context/userContext";
 import DashboardActions from "../components/dashboard/DashboardActions";
@@ -25,12 +26,31 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-  const { getCurrentProfile, loading, profile } = useProfileContext();
+  const history = useHistory();
+
+  const {
+    getCurrentProfile,
+    loading,
+    profile,
+    deleteAccount,
+    errors,
+    removeAlert,
+  } = useProfileContext();
   const { user } = useUserContext();
 
   useEffect(() => {
     getCurrentProfile();
   }, []);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+    removeAlert();
+  };
 
   return loading && profile === null ? (
     <Loading />
@@ -41,6 +61,24 @@ const Dashboard = () => {
           Dashboard
         </Typography>
 
+        {errors && (
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            onClose={handleSnackbarClose}
+          >
+            <Message
+              handleClose={handleSnackbarClose}
+              type={errors.length > 0 ? errors[0].type : "error"}
+              message={errors.length > 0 ? errors[0].msg : null}
+            />
+          </Snackbar>
+        )}
+
         <Typography variant='h5'>
           <PersonIcon fontSize='large' className={classes.userIcon} />
           {"  "}
@@ -48,8 +86,14 @@ const Dashboard = () => {
         </Typography>
         {profile !== null ? (
           <>
-            <DashboardActions />
+            <DashboardActions
+              deleteAccount={deleteAccount}
+              errors={errors}
+              history={history}
+              setSnackbarOpen={setSnackbarOpen}
+            />
             <Experience experience={profile.experience} />
+            <br />
             <Education education={profile.education} />
           </>
         ) : (
