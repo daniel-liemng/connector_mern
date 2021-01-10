@@ -81,7 +81,7 @@ const UserProvider = ({ children }) => {
       // Load User
       loadUser();
     } catch (err) {
-      console.log("1122", err.response.data);
+      console.log(err.response.data);
 
       // Show error validation from backend
       const errors = err.response.data.errors;
@@ -147,9 +147,13 @@ const UserProvider = ({ children }) => {
   //// Logout
   const logout = () => {
     // dispatch({ type: PROFILE_CLEAR });
-    console.log("aaaa11", state.token);
 
     dispatch({ type: LOGOUT });
+
+    // Temporarily reload the page -> fix later
+    // Prob: log out: 1st: just remove localStorage, token(state) is null, user & isAuth still there
+    // Prob: log out: 2st: delete all. Truely logout
+    window.location.reload(true);
   };
 
   const setAlert = (msg, type) => {

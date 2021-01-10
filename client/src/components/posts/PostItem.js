@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import {
   Card,
   CardMedia,
   CardContent,
   Avatar,
   Button,
+  Snackbar,
   Container,
   Typography,
   Badge,
@@ -19,6 +20,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Moment from "react-moment";
 
 import { usePostContext } from "../../context/postContext";
+import Message from "../Message";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,10 +51,43 @@ const PostItem = ({ post }) => {
 
   const { _id, text, name, avatar, user, likes, comments, date } = post;
 
-  const { addLike, removeLike } = usePostContext();
+  const {
+    addLike,
+    removeLike,
+    deletePost,
+    error,
+    removeAlert,
+  } = usePostContext();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+    removeAlert();
+  };
 
   return (
     <Container>
+      {error && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={handleSnackbarClose}
+        >
+          <Message
+            handleClose={handleSnackbarClose}
+            type={error && error.type}
+            message={error && error.msg}
+          />
+        </Snackbar>
+      )}
       <Card className={classes.root}>
         <CardMedia className={classes.imgContainer}>
           <Avatar src={avatar} alt={name} className={classes.img} />
@@ -70,7 +105,15 @@ const PostItem = ({ post }) => {
           </Typography>
 
           <div className={classes.btnGroup}>
-            <IconButton style={{ color: "blue" }} onClick={() => addLike(_id)}>
+            <IconButton
+              style={{ color: "blue" }}
+              onClick={() => {
+                addLike(_id);
+                if (error) {
+                  setSnackbarOpen(true);
+                }
+              }}
+            >
               <Badge
                 badgeContent={likes.length > 0 ? likes.length : 0}
                 color='secondary'
@@ -79,7 +122,12 @@ const PostItem = ({ post }) => {
             </IconButton>
             <IconButton
               style={{ color: "grey" }}
-              onClick={() => removeLike(_id)}
+              onClick={() => {
+                removeLike(_id);
+                if (error) {
+                  setSnackbarOpen(true);
+                }
+              }}
             >
               <ThumbDownIcon fontSize='large' />
             </IconButton>
@@ -95,7 +143,15 @@ const PostItem = ({ post }) => {
               />
             </IconButton>
 
-            <IconButton style={{ color: "red" }}>
+            <IconButton
+              style={{ color: "red" }}
+              onClick={() => {
+                deletePost(_id);
+                if (error) {
+                  setSnackbarOpen(true);
+                }
+              }}
+            >
               <DeleteForeverIcon fontSize='large' />
             </IconButton>
           </div>

@@ -1,4 +1,11 @@
-import { GET_POSTS, POSTS_ERROR, UPDATE_LIKES } from "../actionTypes";
+import {
+  GET_POSTS,
+  POSTS_ERROR,
+  UPDATE_LIKES,
+  DELETE_POST,
+  SET_ALERT,
+  REMOVE_ALERT,
+} from "../actionTypes";
 
 const postReducer = (state, action) => {
   const { type, payload } = action;
@@ -16,6 +23,16 @@ const postReducer = (state, action) => {
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
       };
+    case DELETE_POST:
+      return {
+        ...state,
+        loading: false,
+        posts: state.posts.filter((post) => post._id !== payload),
+      };
+    case SET_ALERT:
+      return { ...state, error: { msg: payload.msg, type: payload.type } };
+    case REMOVE_ALERT:
+      return { ...state, error: {} };
     default:
       return state;
   }
