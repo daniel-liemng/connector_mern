@@ -218,8 +218,6 @@ const EditProfile = () => {
     </>
   );
 
-  console.log(formData);
-
   return (
     <Container maxWidth='sm'>
       {errors && (

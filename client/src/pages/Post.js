@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
 import { Container, Button } from "@material-ui/core";
 
 import { usePostContext } from "../context/postContext";
@@ -9,11 +8,7 @@ import PostItem from "../components/posts/PostItem";
 import AddComment from "../components/post/AddComment";
 import CommentItem from "../components/post/CommentItem";
 
-const useStyles = makeStyles((theme) => ({}));
-
 const Post = ({ match }) => {
-  const classes = useStyles();
-
   const { getPost, post, loading } = usePostContext();
 
   useEffect(() => {

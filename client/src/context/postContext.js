@@ -34,7 +34,6 @@ const PostProvider = ({ children }) => {
 
       dispatch({ type: GET_POSTS, payload: data });
     } catch (err) {
-      console.log(err.response);
       dispatch({
         type: POSTS_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -49,7 +48,6 @@ const PostProvider = ({ children }) => {
 
       dispatch({ type: GET_POST, payload: data });
     } catch (err) {
-      console.log(err.response);
       dispatch({
         type: POSTS_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -69,7 +67,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "You like this post", type: "success" },
       });
     } catch (err) {
-      console.log(err.response);
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -96,8 +93,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "You unlike this post", type: "success" },
       });
     } catch (err) {
-      console.log(err.response);
-      console.log(err.response.data.errors[0].msg);
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -124,9 +119,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "Post Removed", type: "error" },
       });
     } catch (err) {
-      console.log(err.response);
-      console.log(err.response.data.errors[0].msg);
-
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -159,8 +151,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "Post Created", type: "success" },
       });
     } catch (err) {
-      console.log(err.response);
-      console.log(err.response.data.errors[0].msg);
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -197,8 +187,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "Comment Created", type: "success" },
       });
     } catch (err) {
-      console.log(err.response);
-      console.log(err.response.data.errors[0].msg);
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -225,8 +213,6 @@ const PostProvider = ({ children }) => {
         payload: { msg: "Comment Removed", type: "error" },
       });
     } catch (err) {
-      console.log(err.response);
-      console.log(err.response.data.errors[0].msg);
       dispatch({
         type: POSTS_ERROR,
         payload: {

@@ -150,7 +150,7 @@ const Navbar = () => {
           </SwipeableDrawer>
           <Typography variant='h6' className={classes.title}>
             <Link to='/' className={classes.titleLink}>
-              EventBooking
+              WideNetwork
             </Link>
           </Typography>
           <Hidden smDown>

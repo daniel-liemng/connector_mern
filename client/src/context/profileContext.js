@@ -34,10 +34,8 @@ const ProfileProvider = ({ children }) => {
     try {
       const { data } = await axios.get("/api/profile/me");
 
-      console.log("data", data);
       dispatch({ type: PROFILE_GET, payload: data });
     } catch (err) {
-      console.log("err", err);
       dispatch({
         type: PROFILE_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -55,7 +53,6 @@ const ProfileProvider = ({ children }) => {
 
       dispatch({ type: PROFILES_GET, payload: data });
     } catch (err) {
-      console.log("err", err);
       dispatch({
         type: PROFILE_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -70,7 +67,6 @@ const ProfileProvider = ({ children }) => {
 
       dispatch({ type: PROFILE_GET, payload: data });
     } catch (err) {
-      console.log("err", err);
       dispatch({
         type: PROFILE_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -85,7 +81,6 @@ const ProfileProvider = ({ children }) => {
 
       dispatch({ type: GET_REPOS, payload: data });
     } catch (err) {
-      console.log("err", err);
       dispatch({
         type: PROFILE_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
@@ -125,7 +120,6 @@ const ProfileProvider = ({ children }) => {
         }, 3000);
       }
     } catch (err) {
-      console.log(err.response.data);
       // Show error validation from backend
       const errors = err.response.data.errors;
 
@@ -169,7 +163,6 @@ const ProfileProvider = ({ children }) => {
         history.push("/dashboard");
       }, 6000);
     } catch (err) {
-      console.log(err.response.data);
       // Show error validation from backend
       const errors = err.response.data.errors;
 
@@ -213,7 +206,6 @@ const ProfileProvider = ({ children }) => {
         history.push("/dashboard");
       }, 4000);
     } catch (err) {
-      console.log(err.response.data);
       // Show error validation from backend
       const errors = err.response.data.errors;
 
@@ -272,7 +264,7 @@ const ProfileProvider = ({ children }) => {
   const deleteAccount = async (history) => {
     if (window.confirm("Are you sure? This can not be undone")) {
       try {
-        const { data } = await axios.delete("/api/profile");
+        await axios.delete("/api/profile");
 
         dispatch({ type: PROFILE_CLEAR });
 

@@ -81,8 +81,6 @@ const UserProvider = ({ children }) => {
       // Load User
       loadUser();
     } catch (err) {
-      console.log(err.response.data);
-
       // Show error validation from backend
       const errors = err.response.data.errors;
 
@@ -124,7 +122,6 @@ const UserProvider = ({ children }) => {
       // Load User
       loadUser();
     } catch (err) {
-      console.log(err.response.data);
       // Show error validation from backend
       const errors = err.response.data.errors;
 

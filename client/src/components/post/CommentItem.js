@@ -9,12 +9,9 @@ import {
   Snackbar,
   Container,
   Typography,
-  Badge,
   IconButton,
 } from "@material-ui/core";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import SupervisedUserCircleOutlinedIcon from "@material-ui/icons/SupervisedUserCircleOutlined";
+
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Moment from "react-moment";
 
