@@ -5,6 +5,8 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -38,6 +40,21 @@ const postReducer = (state, action) => {
         ...state,
         loading: false,
         posts: [payload, ...state.posts],
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        loading: false,
+        post: { ...state.post, comments: payload },
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        loading: false,
+        post: {
+          ...state.post,
+          comments: state.post.commemts.filter((comm) => comm._id !== payload),
+        },
       };
     case SET_ALERT:
       return { ...state, error: { msg: payload.msg, type: payload.type } };

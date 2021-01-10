@@ -6,6 +6,7 @@ import { Container, Button } from "@material-ui/core";
 import { usePostContext } from "../context/postContext";
 import Loading from "../components/Loading";
 import PostItem from "../components/posts/PostItem";
+import AddComment from "../components/post/AddComment";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -26,6 +27,7 @@ const Post = ({ match }) => {
         Back to Posts
       </Button>
       <PostItem post={post} showActions={false} />
+      <AddComment postId={post._id} />
     </Container>
   );
 };

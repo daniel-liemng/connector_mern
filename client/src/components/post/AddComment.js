@@ -18,10 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddPost = () => {
+const AddComment = ({ postId }) => {
   const classes = useStyles();
 
-  const { addPost, error, removeAlert } = usePostContext();
+  const { addComment, error, removeAlert } = usePostContext();
 
   const [text, setText] = useState("");
 
@@ -35,9 +35,9 @@ const AddPost = () => {
     removeAlert();
   };
 
-  const handleAddPost = (e) => {
+  const handleAddComment = (e) => {
     e.preventDefault();
-    addPost({ text });
+    addComment(postId, { text });
     if (error) {
       setSnackbarOpen(true);
     }
@@ -47,7 +47,7 @@ const AddPost = () => {
   return (
     <Paper elevation={0} className={classes.paper}>
       <Typography variant='h5' color='secondary'>
-        Say something
+        Leave a Comment
       </Typography>
       {error && (
         <Snackbar
@@ -71,12 +71,12 @@ const AddPost = () => {
         className={classes.root}
         noValidate
         autoComplete='off'
-        onSubmit={handleAddPost}
+        onSubmit={handleAddComment}
       >
         <TextField
-          placeholder='Create a post...'
+          placeholder='Leave a Comment...'
           fullWidth
-          rows={4}
+          rows={2}
           multiline
           style={{ margin: 8 }}
           margin='normal'
@@ -94,11 +94,11 @@ const AddPost = () => {
           color='primary'
           className={classes.submitBtn}
         >
-          Add Post
+          Add Comment
         </Button>
       </form>
     </Paper>
   );
 };
 
-export default AddPost;
+export default AddComment;

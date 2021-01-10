@@ -9,6 +9,8 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -173,6 +175,72 @@ const PostProvider = ({ children }) => {
     }
   };
 
+  // Add comment
+  const addComment = async (postId, formData) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        `/api/posts/comment/${postId}`,
+        formData,
+        config
+      );
+
+      dispatch({ type: ADD_COMMENT, payload: data });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Comment Created", type: "success" },
+      });
+    } catch (err) {
+      console.log(err.response);
+      console.log(err.response.data.errors[0].msg);
+      dispatch({
+        type: POSTS_ERROR,
+        payload: {
+          msg:
+            err.response && err.response.data.errors
+              ? err.response.data.errors[0].msg
+              : err.response,
+          status: err.response.status,
+          type: "error",
+        },
+      });
+    }
+  };
+
+  // Delete comment
+  const deleteComment = async (postId, commentId) => {
+    try {
+      await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
+
+      dispatch({ type: REMOVE_COMMENT, payload: commentId });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Comment Removed", type: "error" },
+      });
+    } catch (err) {
+      console.log(err.response);
+      console.log(err.response.data.errors[0].msg);
+      dispatch({
+        type: POSTS_ERROR,
+        payload: {
+          msg:
+            err.response && err.response.data.errors
+              ? err.response.data.errors[0].msg
+              : err.response,
+          status: err.response.status,
+          type: "error",
+        },
+      });
+    }
+  };
+
   //// Alert
   const setAlert = (msg, type) => {
     dispatch({ type: SET_ALERT, payload: { msg, type } });
@@ -192,6 +260,8 @@ const PostProvider = ({ children }) => {
         deletePost,
         addPost,
         getPost,
+        addComment,
+        deleteComment,
         setAlert,
         removeAlert,
       }}
