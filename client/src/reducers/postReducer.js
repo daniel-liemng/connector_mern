@@ -53,7 +53,7 @@ const postReducer = (state, action) => {
         loading: false,
         post: {
           ...state.post,
-          comments: state.post.commemts.filter((comm) => comm._id !== payload),
+          comments: state.post.comments.filter((comm) => comm._id !== payload),
         },
       };
     case SET_ALERT:

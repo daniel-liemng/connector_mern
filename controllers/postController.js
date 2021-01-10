@@ -234,9 +234,7 @@ const deleteComment = async (req, res) => {
 
     // Check if user is creator
     if (comment.user.toString() !== req.user.id) {
-      return res
-        .status(401)
-        .json({ errors: [[{ msg: "User Not Authorized" }]] });
+      return res.status(401).json({ errors: [{ msg: "User Not Authorized" }] });
     }
 
     // Get remove index
