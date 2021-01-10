@@ -3,6 +3,7 @@ import {
   POSTS_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
+  ADD_POST,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -28,6 +29,12 @@ const postReducer = (state, action) => {
         ...state,
         loading: false,
         posts: state.posts.filter((post) => post._id !== payload),
+      };
+    case ADD_POST:
+      return {
+        ...state,
+        loading: false,
+        posts: [payload, ...state.posts],
       };
     case SET_ALERT:
       return { ...state, error: { msg: payload.msg, type: payload.type } };

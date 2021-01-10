@@ -3,14 +3,14 @@ import axios from "axios";
 
 import reducer from "../reducers/postReducer";
 import {
-  DELETE_POST,
   GET_POSTS,
   POSTS_ERROR,
   UPDATE_LIKES,
+  DELETE_POST,
+  ADD_POST,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
-import { set } from "mongoose";
 
 const PostContext = createContext();
 
@@ -45,6 +45,11 @@ const PostProvider = ({ children }) => {
       const { data } = await axios.put(`/api/posts/like/${postId}`);
 
       dispatch({ type: UPDATE_LIKES, payload: { id: postId, likes: data } });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "You like this post", type: "success" },
+      });
     } catch (err) {
       console.log(err.response);
       dispatch({
@@ -67,6 +72,11 @@ const PostProvider = ({ children }) => {
       const { data } = await axios.put(`/api/posts/unlike/${postId}`);
 
       dispatch({ type: UPDATE_LIKES, payload: { id: postId, likes: data } });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "You unlike this post", type: "success" },
+      });
     } catch (err) {
       console.log(err.response);
       console.log(err.response.data.errors[0].msg);
@@ -87,15 +97,52 @@ const PostProvider = ({ children }) => {
   // Delete post
   const deletePost = async (postId) => {
     try {
-      const { data } = await axios.delete(`/api/posts/${postId}`);
+      await axios.delete(`/api/posts/${postId}`);
 
       dispatch({ type: DELETE_POST, payload: postId });
 
-      alert("Post Removed");
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Post Removed", type: "error" },
+      });
     } catch (err) {
       console.log(err.response);
       console.log(err.response.data.errors[0].msg);
 
+      dispatch({
+        type: POSTS_ERROR,
+        payload: {
+          msg:
+            err.response && err.response.data.errors
+              ? err.response.data.errors[0].msg
+              : err.response,
+          status: err.response.status,
+          type: "error",
+        },
+      });
+    }
+  };
+
+  // Add post
+  const addPost = async (formData) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(`/api/posts`, formData, config);
+
+      dispatch({ type: ADD_POST, payload: data });
+
+      dispatch({
+        type: SET_ALERT,
+        payload: { msg: "Post Created", type: "success" },
+      });
+    } catch (err) {
+      console.log(err.response);
+      console.log(err.response.data.errors[0].msg);
       dispatch({
         type: POSTS_ERROR,
         payload: {
@@ -127,6 +174,7 @@ const PostProvider = ({ children }) => {
         addLike,
         removeLike,
         deletePost,
+        addPost,
         setAlert,
         removeAlert,
       }}

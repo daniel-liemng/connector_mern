@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import { usePostContext } from "../context/postContext";
 import Loading from "../components/Loading";
 import PostItem from "../components/posts/PostItem";
+import AddPost from "../components/posts/AddPost";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,6 +35,8 @@ const Posts = () => {
           Posts
         </Typography>
         <Typography variant='h6'>Welcome to the community</Typography>
+
+        <AddPost />
 
         <div>
           {posts.map((post) => (

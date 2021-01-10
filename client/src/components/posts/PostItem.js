@@ -6,7 +6,6 @@ import {
   CardMedia,
   CardContent,
   Avatar,
-  Button,
   Snackbar,
   Container,
   Typography,
@@ -90,7 +89,13 @@ const PostItem = ({ post }) => {
       )}
       <Card className={classes.root}>
         <CardMedia className={classes.imgContainer}>
-          <Avatar src={avatar} alt={name} className={classes.img} />
+          <Avatar
+            src={avatar}
+            alt={name}
+            className={classes.img}
+            component={Link}
+            to={`/profile/${user}`}
+          />
           <Typography variant='h6' color='secondary'>
             {name}
           </Typography>
