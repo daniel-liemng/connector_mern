@@ -150,7 +150,7 @@ const UserProvider = ({ children }) => {
     // Temporarily reload the page -> fix later
     // Prob: log out: 1st: just remove localStorage, token(state) is null, user & isAuth still there
     // Prob: log out: 2st: delete all. Truely logout
-    window.location.reload(true);
+    // window.location.reload(true);
   };
 
   const setAlert = (msg, type) => {
