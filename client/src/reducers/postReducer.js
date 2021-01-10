@@ -4,6 +4,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  GET_POST,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -14,6 +15,8 @@ const postReducer = (state, action) => {
   switch (type) {
     case GET_POSTS:
       return { ...state, loading: false, posts: payload };
+    case GET_POST:
+      return { ...state, loading: false, post: payload };
     case POSTS_ERROR:
       return { ...state, loading: false, error: payload };
     case UPDATE_LIKES:

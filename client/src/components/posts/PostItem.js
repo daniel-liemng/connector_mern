@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostItem = ({ post }) => {
+const PostItem = ({ post, showActions }) => {
   const classes = useStyles();
 
   const { _id, text, name, avatar, user, likes, comments, date } = post;
@@ -109,61 +109,70 @@ const PostItem = ({ post }) => {
             Posted on <Moment format='YYYY/MM/DD'>{date}</Moment>
           </Typography>
 
-          <div className={classes.btnGroup}>
-            <IconButton
-              style={{ color: "blue" }}
-              onClick={() => {
-                addLike(_id);
-                if (error) {
-                  setSnackbarOpen(true);
-                }
-              }}
-            >
-              <Badge
-                badgeContent={likes.length > 0 ? likes.length : 0}
-                color='secondary'
-                children={<ThumbUpIcon fontSize='large' />}
-              />
-            </IconButton>
-            <IconButton
-              style={{ color: "grey" }}
-              onClick={() => {
-                removeLike(_id);
-                if (error) {
-                  setSnackbarOpen(true);
-                }
-              }}
-            >
-              <ThumbDownIcon fontSize='large' />
-            </IconButton>
-            <IconButton
-              style={{ color: "orange" }}
-              component={Link}
-              to={`/post/${_id}`}
-            >
-              <Badge
-                badgeContent={comments.length > 0 ? comments.length : 0}
-                color='secondary'
-                children={<SupervisedUserCircleOutlinedIcon fontSize='large' />}
-              />
-            </IconButton>
+          {showActions && (
+            <div className={classes.btnGroup}>
+              <IconButton
+                style={{ color: "blue" }}
+                onClick={() => {
+                  addLike(_id);
+                  if (error) {
+                    setSnackbarOpen(true);
+                  }
+                }}
+              >
+                <Badge
+                  badgeContent={likes.length > 0 ? likes.length : 0}
+                  color='secondary'
+                  children={<ThumbUpIcon fontSize='large' />}
+                />
+              </IconButton>
+              <IconButton
+                style={{ color: "grey" }}
+                onClick={() => {
+                  removeLike(_id);
+                  if (error) {
+                    setSnackbarOpen(true);
+                  }
+                }}
+              >
+                <ThumbDownIcon fontSize='large' />
+              </IconButton>
+              <IconButton
+                style={{ color: "orange" }}
+                component={Link}
+                to={`/post/${_id}`}
+              >
+                <Badge
+                  badgeContent={comments.length > 0 ? comments.length : 0}
+                  color='secondary'
+                  children={
+                    <SupervisedUserCircleOutlinedIcon fontSize='large' />
+                  }
+                />
+              </IconButton>
 
-            <IconButton
-              style={{ color: "red" }}
-              onClick={() => {
-                deletePost(_id);
-                if (error) {
-                  setSnackbarOpen(true);
-                }
-              }}
-            >
-              <DeleteForeverIcon fontSize='large' />
-            </IconButton>
-          </div>
+              <IconButton
+                style={{ color: "red" }}
+                onClick={() => {
+                  deletePost(_id);
+                  if (error) {
+                    setSnackbarOpen(true);
+                  }
+                }}
+              >
+                <DeleteForeverIcon fontSize='large' />
+              </IconButton>
+            </div>
+          )}
         </CardContent>
       </Card>
     </Container>
   );
+};
+
+// Share this template with SinglePost, but no group of buttons
+PostItem.defaultProps = {
+  showActions: true,
 };
 
 export default PostItem;

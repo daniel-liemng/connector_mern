@@ -8,6 +8,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  GET_POST,
   SET_ALERT,
   REMOVE_ALERT,
 } from "../actionTypes";
@@ -30,6 +31,21 @@ const PostProvider = ({ children }) => {
       const { data } = await axios.get("/api/posts");
 
       dispatch({ type: GET_POSTS, payload: data });
+    } catch (err) {
+      console.log(err.response);
+      dispatch({
+        type: POSTS_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+
+  // Get single post
+  const getPost = async (postId) => {
+    try {
+      const { data } = await axios.get(`/api/posts/${postId}`);
+
+      dispatch({ type: GET_POST, payload: data });
     } catch (err) {
       console.log(err.response);
       dispatch({
@@ -175,6 +191,7 @@ const PostProvider = ({ children }) => {
         removeLike,
         deletePost,
         addPost,
+        getPost,
         setAlert,
         removeAlert,
       }}
