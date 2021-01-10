@@ -1,5 +1,5 @@
 # Wide Networking
-Full MERN - Material UI
+MERN Stack - Material UI
 
 ## Table of Contents
 * [About The Project](#about)
@@ -42,16 +42,6 @@ A web application platform to widen the networking. Logged in user can create pr
 **2.** `git clone https://github.com/daniel-liemng/connector_mern.git`
 
 **3.** Install server-side and client-side dependencies
-```
-npm install
-```
-```
-cd client
-npm install
-```
-```
-npm run dev
-```
 
 ##### Environment variables
 
@@ -64,6 +54,20 @@ MONGO_URI=mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.h5xct.mongodb.net/<DB_NAM
 JWT_SECRET=<JWT_SECRET>
 GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID>
 GITHUB_CLIENT_SECRET=<GITHUB_CLIENT_SECRET>
+```
+
+```
+npm install
+```
+```
+cd client
+npm install
+```
+```
+npm run dev
+```
+
+
 
 
 
