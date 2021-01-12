@@ -1,5 +1,6 @@
 # Wide Networking
 MERN Stack - Material UI
+Deploy server on Heroku and frontend on Netlify
 
 [Live website](https://connector-mern.netlify.app)
 
