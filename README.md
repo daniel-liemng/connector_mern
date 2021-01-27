@@ -14,7 +14,7 @@ Deploy server on Heroku and frontend on Netlify
 * [Getting started](#getting-started)
 
 ## About The Project
-A web application platform to widen the networking. Logged in user can create profile, add posts and add comments. Guest user can view the other users' profile.
+A web application platform to expand the networking. Logged in user can create profile, add posts and add comments. Guest user can view the other users' profile.
 
 ## Tech Stack
   * ##### MERN: MongoDB, Express, ReactJS, NodeJS
